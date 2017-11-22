@@ -11,7 +11,9 @@ namespace DatabaseProject
 {
     class Program
     {
+        //first_last
         static string DB_NAME = "";
+        //first_last
         static string DB_USER_NAME = "";
         static string DB_USER_PWD = "";
 
@@ -29,6 +31,7 @@ namespace DatabaseProject
                 Movie obj = JsonConvert.DeserializeObject<Movie>(json);
 
                 WriteMovie(obj);
+                WriteLanguage(obj);
             }
         }
 
@@ -54,18 +57,28 @@ namespace DatabaseProject
                 //Write user to database
                 connection = GetConnection();
 
-                SqlCommand command = new SqlCommand();
-                command.Connection = connection;
-                command.CommandText =
-                    "INSERT INTO " + "Project" + ".Movies (Title) " +
-                    "VALUES (@Title)";
+                using (SqlCommand command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText =
+                        "INSERT INTO " + "Project" + ".Movies (Title, ContentRating, ReleaseDate, Runtime) " +
+                        "VALUES (@Title, @ContentRating, @ReleaseDate, @Runtime)" +
+                        "Select Scope_Identity()";
 
-                command.Parameters.AddWithValue("@Title", obj.Title);
+                    command.Parameters.AddWithValue("@Title", obj.Title);
+                    command.Parameters.AddWithValue("@ContentRating", obj.Content_Rating);
+                    command.Parameters.AddWithValue("@ReleaseDate", obj.Release_Date);
+                    command.Parameters.AddWithValue("@Runtime", Convert.ToInt32(obj.Length));
+
+                    connection.Open();
+                    //command.ExecuteNonQuery();
+
+                    //command.CommandText = "";
+
+                    obj.MovieID = Convert.ToInt32(command.ExecuteScalar());
 
 
-
-                connection.Open();
-                command.ExecuteNonQuery();
+                }
             }
             catch (Exception e)
             {
@@ -80,50 +93,127 @@ namespace DatabaseProject
             }
         }
 
-        public class Movie
+        public static void WriteLanguage(Movie obj)
         {
-            public string Title { get; set; }
-            public string Content_Rating { get; set; }
-            public DateTime Release_Date { get; set; }
-            public string Length { get; set; }
+            SqlConnection connection = null;
 
-            //public string Address { get; set; }
-            //public string City { get; set; }
-            //public string State { get; set; }
-            //public string Country { get; set; }
+            try
+            {
+                //Write user to database
+                using (connection = GetConnection())
+                {
+                    connection.Open();
 
-            //public List<string> Writers { get; set; }
-            public string Director { get; set; }
-            public List<string> Genre { get; set; }
+                    foreach (string lang in obj.Metadata.Languages)
+                    {
+                        int LanguageID = -1;
 
-            public Metadata Metadata { get; set; }
+                        using (SqlCommand command = new SqlCommand())
+                        {
+                            command.Connection = connection;
+                            command.CommandText =
+                                "Select LanguageID " +
+                                "From Project.Languages " +
+                                "Where Language = '" + lang + "'";
 
-            public string Rating_Count { get; set; }
-            public string IMDB_ID { get; set; }
-            public double Rating { get; set; }
+                            SqlDataReader LangQueryReader = command.ExecuteReader();
 
-            public List<Actor> Cast { get; set; }
-            public List<Trailer> Trailer { get; set; }
+                            if (LangQueryReader.HasRows)
+                            {
+                                LangQueryReader.Read();
+                                LanguageID = LangQueryReader.GetInt32(0);
+                                LangQueryReader.Close();
+                            }
+                            else
+                            {
+                                command.CommandText =
+                                    "Insert Project.Languages (Language) " +
+                                    "Values ('" + lang + "')" +
+                                    "Select Scope_Identity()";
 
-        }
+                                LangQueryReader.Close();
 
-        public class Metadata
-        {
-            public List<string> Languages { get; set; }
-            public string Budget { get; set; }
-            public string Gross { get; set; }
-        }
+                                LanguageID = Convert.ToInt32(command.ExecuteScalar());
+                            }
+                        }
+                        using (SqlCommand command = new SqlCommand())
+                        {
+                            command.Connection = connection;
+                            command.CommandText =
+                                "INSERT INTO " + "Project" + ".MovieLanguages (LanguageID, MovieID) " +
+                                "VALUES (@LanguageID, @MovieID)";
 
-        public class Actor
-        {
-            public string Character { get; set; }
-            public string Name { get; set; }
-        }
+                            command.Parameters.AddWithValue("@LanguageID", LanguageID);
+                            command.Parameters.AddWithValue("@MovieID", obj.MovieID);
 
-        public class Trailer
-        {
-            public string Definition { get; set; }
-            public string VideoUrl { get; set; }
+                            // connection.Open();
+                            command.ExecuteNonQuery();
+                        }
+                    }
+
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            finally
+            {
+                if (connection != null)
+                {
+                    connection.Close();
+                }
+            }
         }
     }
 }
+
+
+public class Movie
+{
+    public int MovieID { get; set; }
+    public string Title { get; set; }
+    public string Content_Rating { get; set; }
+    public DateTime Release_Date { get; set; }
+    public string Length { get; set; }
+
+    //public string Address { get; set; }
+    //public string City { get; set; }
+    //public string State { get; set; }
+    //public string Country { get; set; }
+
+    //public List<string> Writers { get; set; }
+    public string Director { get; set; }
+    public List<string> Genre { get; set; }
+
+    public Metadata Metadata { get; set; }
+
+    public string Rating_Count { get; set; }
+    public string IMDB_ID { get; set; }
+    public double Rating { get; set; }
+
+    public List<Actor> Cast { get; set; }
+    public List<Trailer> Trailer { get; set; }
+
+}
+
+public class Metadata
+{
+    public List<string> Languages { get; set; }
+    public string Budget { get; set; }
+    public string Gross { get; set; }
+}
+
+public class Actor
+{
+    public string Character { get; set; }
+    public string Name { get; set; }
+}
+
+public class Trailer
+{
+    public string Definition { get; set; }
+    public string VideoUrl { get; set; }
+}
+
+
