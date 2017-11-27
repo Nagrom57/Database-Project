@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseProject", "DatabaseProject\DatabaseProject.csproj", "{B959AD24-0B9C-46EE-8355-B6D553651561}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetMovieData", "GetMovieData\GetMovieData.csproj", "{DDD84B04-08CC-46A8-8048-90999F49A024}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{B959AD24-0B9C-46EE-8355-B6D553651561}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B959AD24-0B9C-46EE-8355-B6D553651561}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B959AD24-0B9C-46EE-8355-B6D553651561}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDD84B04-08CC-46A8-8048-90999F49A024}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDD84B04-08CC-46A8-8048-90999F49A024}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDD84B04-08CC-46A8-8048-90999F49A024}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDD84B04-08CC-46A8-8048-90999F49A024}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

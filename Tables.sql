@@ -1,11 +1,23 @@
-
+drop table Project.Trailer
+drop table Project.Cast
+drop table Project.MovieWriters
+drop table Project.MovieLanguages
+drop table Project.MovieDirectors
+drop table Project.MovieGenre
+drop table Project.Genres
+drop table Project.Languages
+drop table Project.Ratings
+drop table Project.Directors
+drop table Project.Actors
+drop table Project.Writers
+drop table Project.Movies
 
 Create Table Project.Movies (
-	MovieID		int				Primary Key identity
+	MovieID		int				Primary Key Identity
 	, Title			varchar(100)	not null
-	, ContentRating	varchar(8)
+	, ContentRating	varchar(16)
 	, ReleaseDate	date
-	, Runtime		int
+	, Runtime		int				null
 )
 
 create table Project.Trailer (
@@ -22,7 +34,7 @@ create table Project.Languages (
 )
 
 create table Project.MovieLanguages (
-	MovieLanguageID		int		Primary Key
+	MovieLanguageID		int		Primary Key Identity
 	, LanguageID		int		Foreign Key
 			References Project.Languages (LanguageID)
 	, MovieID			int			Foreign Key
@@ -69,7 +81,7 @@ create table Project.Directors (
 	, DirectorName	varchar(50)
 )
 create table Project.MovieDirectors (
-	MovieDirectorsID		int		Primary Key
+	MovieDirectorsID		int		Primary Key Identity
 	, DirectorID			int		Foreign Key
 			References Project.Directors (DirectorID)
 	, MovieID		int			Foreign Key
