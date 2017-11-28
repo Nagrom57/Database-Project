@@ -1,210 +1,26 @@
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Thor', 'PG-13', '2011-05-06', 115)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Bad Moon', 'R', '1996-11-01', 80)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Thor: Ragnarok', 'PG-13', '2017-11-03', 130)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Thor: The Dark World', 'PG-13', '2013-11-08', 112)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Thoroughbreds', null, '2018-03-09', 90)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Kon-Tiki', 'PG-13', '2013-04-26', 118)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Valerian and the City of a Thousand Planets', 'PG-13', '2017-07-21', 137)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Darkest Hour', 'PG-13', '2017-11-22', 125)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Almighty Thor', 'TV-14', '2011-05-07', 92)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Birth of the Dragon', 'PG-13', '2017-08-25', 95)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('War Horse', 'PG-13', '2011-12-25', 146)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('The Big Short', 'R', '2015-12-23', 130)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Event Horizon', 'R', '1997-08-15', 96)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('The Death of Stalin', 'R', '2017-10-20', 106)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Truth or Dare', null, '2017-10-08', 90)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Thor the Conqueror', 'R', '1983-02-05', 91)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('The Grand Budapest Hotel', 'R', '2014-03-28', 99)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Deepwater Horizon', 'PG-13', '2016-09-30', 107)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Thor Ragnarok Documentary', null, '2017-02-26', 60)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Death on the Nile', 'PG', '1978-09-29', 140)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Thor', null, '1962-09-06', null)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Hammer of the Gods', null, '2009-04-11', 92)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('The Rocky Horror Picture Show', 'R', '1975-08-31', 100)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Horrible Bosses', 'R', '2011-07-08', 98)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Sleeping with Other People', 'R', '2015-08-12', 101)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('The Amityville Horror', 'R', '2005-04-15', 90)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Horrible Bosses 2', 'R', '2014-11-26', 108)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Parenthood', 'PG-13', '1989-08-02', 124)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('O Brother, Where Art Thou?', 'PG-13', '2001-02-02', 107)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('The Last House on the Left', 'R', '2009-03-13', 110)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Short Circuit', 'PG', '1986-05-09', 98)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Horns', 'R', '2014-10-03', 120)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Sweet Home Alabama', 'PG-13', '2002-09-27', 108)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Truth or Dare', null, '2018-04-27', null)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Some Like It Hot', 'NOT RATED', '1959-04-14', 121)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Valiant Thor', null, null, null)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('The Finest Hours', 'PG-13', '2016-01-29', 117)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Euphoria', null, '2018-02-02', 104)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Wet Hot American Summer', 'R', '2002-04-11', 97)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('I Am Thor', null, '2015-11-20', 82)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Wrath of the Titans', 'PG-13', '2012-03-30', 99)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Shortbus', 'UNRATED', '2006-10-20', 101)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('I Don't Feel at Home in This World Anymore.', 'TV-MA', '2017-02-24', 93)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Monty Python and the Holy Grail', 'PG', '1975-05-25', 91)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Angus, Thongs and Perfect Snogging', 'PG-13', '2008-07-25', 100)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Mindhorn', 'TV-MA', '2017-05-05', 89)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Short Term 12', 'R', '2013-08-23', 96)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Lost Horizon', 'UNRATED', '1937-09-01', 97)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Author! Author!', 'PG', '1982-06-18', 110)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Green Street Hooligans', 'R', '2005-09-09', 109)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('The Birth of a Nation', 'R', '2016-10-07', 120)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Anchorman: The Legend of Ron Burgundy', 'PG-13', '2004-07-09', 94)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Anthony Adverse', 'NOT RATED', '1936-08-29', 141)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Truth or Die', 'NOT RATED', '2012-08-06', 96)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Thor: Legend of the Magical Hammer', 'PG', '2013-01-08', 79)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Horton Hears a Who!', 'G', '2008-03-14', 86)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Beethoven', 'PG', '1992-04-03', 87)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Little Shop of Horrors', 'PG-13', '1986-12-19', 94)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('The Green Hornet', 'PG-13', '2011-01-14', 119)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Get Shorty', 'R', '1995-10-20', 105)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Odd Thomas', null, '2014-02-28', 97)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Shortwave', null, '2017-10-24', 85)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('A Dangerous Method', 'R', '2011-11-10', 99)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Thunderstorm: The Return of Thor', null, '2011-05-02', 90)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('The Amityville Horror', 'R', '1979-07-27', 117)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Born on the Fourth of July', 'R', '1990-01-05', 145)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('If There Be Thorns', 'TV-14', '2015-04-05', 100)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Ghost House', null, '2017-08-25', 89)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('The Last House on the Left', 'UNRATED', '1972-08-30', 84)
-
-Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)
-Values ('Marathon Man', 'R', '1976-10-08', 125)
+Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime) values ('The Peachbasket Hat',null,'1909-06-24',7)
+Insert into Project.Ratings (NumberOfRatings, IMDBRating, MovieID)values (6,6.2,(select MovieID from Project.Movies where title ='The Peachbasket Hat' and releaseDate ='1909-06-24'))
+Insert into Project.Trailer (movieID, TrailerSequence, url)values ((select MovieID from Project.Movies where title ='The Peachbasket Hat' and releaseDate ='1909-06-24'),0,'null')
+if not exists (select * from Project.Genres where GenreName = 'Short') insert into project.genres (GenreName) values ('Short')
+if not exists (select * from Project.Genres where GenreName = 'Comedy') insert into project.genres (GenreName) values ('Comedy')
+insert into project.MovieGenre (GenreId, MovieId) values ((select genreId from project.genres where genreName ='Short'), (select movieId from project.movies where title ='The Peachbasket Hat'))
+insert into project.MovieGenre (GenreId, MovieId) values ((select genreId from project.genres where genreName ='Comedy'), (select movieId from project.movies where title ='The Peachbasket Hat'))
+
+Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime) values ('Pippa Passes; or, The Song of Conscience',null,'1909-10-04',11)
+Insert into Project.Ratings (NumberOfRatings, IMDBRating, MovieID)values (44,5.7,(select MovieID from Project.Movies where title ='Pippa Passes; or, The Song of Conscience' and releaseDate ='1909-10-04'))
+Insert into Project.Trailer (movieID, TrailerSequence, url)values ((select MovieID from Project.Movies where title ='Pippa Passes; or, The Song of Conscience' and releaseDate ='1909-10-04'),0,'null')
+if not exists (select * from Project.Genres where GenreName = 'Short') insert into project.genres (GenreName) values ('Short')
+if not exists (select * from Project.Genres where GenreName = 'Drama') insert into project.genres (GenreName) values ('Drama')
+insert into project.MovieGenre (GenreId, MovieId) values ((select genreId from project.genres where genreName ='Short'), (select movieId from project.movies where title ='Pippa Passes; or, The Song of Conscience'))
+insert into project.MovieGenre (GenreId, MovieId) values ((select genreId from project.genres where genreName ='Drama'), (select movieId from project.movies where title ='Pippa Passes; or, The Song of Conscience'))
+
+Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime) values ('The Politician's Love Story',null,'1909-02-22',6)
+Insert into Project.Ratings (NumberOfRatings, IMDBRating, MovieID)values (54,4.9,(select MovieID from Project.Movies where title ='The Politician's Love Story' and releaseDate ='1909-02-22'))
+Insert into Project.Trailer (movieID, TrailerSequence, url)values ((select MovieID from Project.Movies where title ='The Politician's Love Story' and releaseDate ='1909-02-22'),0,'null')
+if not exists (select * from Project.Genres where GenreName = 'Short') insert into project.genres (GenreName) values ('Short')
+if not exists (select * from Project.Genres where GenreName = 'Comedy') insert into project.genres (GenreName) values ('Comedy')
+if not exists (select * from Project.Genres where GenreName = 'Romance') insert into project.genres (GenreName) values ('Romance')
+insert into project.MovieGenre (GenreId, MovieId) values ((select genreId from project.genres where genreName ='Short'), (select movieId from project.movies where title ='The Politician's Love Story'))
+insert into project.MovieGenre (GenreId, MovieId) values ((select genreId from project.genres where genreName ='Comedy'), (select movieId from project.movies where title ='The Politician's Love Story'))
+insert into project.MovieGenre (GenreId, MovieId) values ((select genreId from project.genres where genreName ='Romance'), (select movieId from project.movies where title ='The Politician's Love Story'))
 

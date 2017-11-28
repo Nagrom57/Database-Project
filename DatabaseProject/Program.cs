@@ -15,180 +15,102 @@ namespace DatabaseProject
     {
         static void Main(string[] args)
         {
-            string[] ids = { "tt0800369", "tt0115610", "tt3501632", "tt1981115", "tt5649108", "tt1613750", "tt2239822", "tt4555426", "tt1792794", "tt2720826",
-            "tt1568911", "tt1596363", "tt0119081", "tt4686844", "tt7126746", "tt0200211", "tt2278388", "tt1860357", "tt6611130", "tt0077413",
-            "tt5151440", "tt1260572", "tt0073629", "tt1499658", "tt3165612", "tt0384806", "tt2170439", "tt0098067", "tt0190590", "tt0844708",
-            "tt0091949", "tt1528071", "tt0256415", "tt6772950", "tt0053291", "tt6474202", "tt2025690", "tt5698320", "tt0243655", "tt2450258",
-            "tt1646987", "tt0367027", "tt5710514", "tt0071853", "tt0963743", "tt4799064", "tt2370248", "tt0029162", "tt0083598", "tt0385002",
-            "tt4196450", "tt0357413", "tt0027300", "tt1838722", "tt1241721", "tt0451079", "tt0103786", "tt0091419", "tt0990407", "tt0113161",
-            "tt1767354", "tt5152640", "tt1571222", "tt1843309", "tt0078767", "tt0096969", "tt4058368", "tt4365566", "tt0068833", "tt0074860" };
-
-            string baseUrl = "http://www.theimdbapi.org/api/movie?movie_id=";
-
             System.IO.StreamWriter file = new System.IO.StreamWriter(
-            Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName + "\\Inserts.txt");
+                Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName + "\\Inserts.txt");
 
-            using (WebClient wc = new WebClient())
+            int MovieIdIndex = 1000;
+            while (MovieIdIndex < 1003)
             {
-                foreach (string id in ids)
+
+                string MovieUrl = "http://www.theimdbapi.org/api/movie?movie_id=tt000" + MovieIdIndex;
+                MovieIdIndex++;
+
+                using (WebClient wc = new WebClient())
                 {
-                    string json = wc.DownloadString(baseUrl + id);
-                    Movie movie = JsonConvert.DeserializeObject<Movie>(json);
+                    try
+                    {
+                        string json = wc.DownloadString(MovieUrl);
+                        Movie movie = JsonConvert.DeserializeObject<Movie>(json);
 
-                    string insertMovie = "Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime)";
-                    string insertLanguage = "Insert Into Project.MovieLanguages (LanguageID, MovieID)";
+                        // *************************** Check nulls *************************************************
+                        if (string.IsNullOrEmpty(movie.Content_Rating)) movie.Content_Rating = "null";
+                        if (string.IsNullOrEmpty(movie.Release_Date)) movie.Release_Date = "null";
+                        if (string.IsNullOrEmpty(movie.Length)) movie.Length = "null";
 
-                    file.WriteLine(insertMovie);
-                    file.WriteLine(GenerateValues.CreateMovieInsert(movie));
-                    file.WriteLine();
+                        // ************************** Inserts for movies table **************************************
+                        string insertMovie = "Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime) "
+                            + "values ('" + movie.Title + "'," + movie.Content_Rating + ",'" + movie.Release_Date + "'," + Convert.ToInt32(movie.Length) + ")";
+                        file.WriteLine(insertMovie);
+                        Console.WriteLine(insertMovie);
+
+                        // ************************** Inserts for directors table *************************************
+                        //This is not quite right yet because it doesnt account for duplicates or the linking table
+                        //string insertDirectors = "Insert into Project.Directors (DirectorName) values ('" + movie.Director + "')";
+                        //file.WriteLine(insertDirectors);
+                        //Console.WriteLine(insertDirectors);
+
+                        // ************************** Inserts for ratings table **************************************
+                        string insertRatings = "Insert into Project.Ratings (NumberOfRatings, IMDBRating, MovieID)" 
+                            + "values (" + movie.Rating_Count + "," + movie.Rating + "," 
+                            + "(select MovieID from Project.Movies where title ='" + movie.Title + "' and releaseDate ='" + movie.Release_Date + "'))";
+                        file.WriteLine(insertRatings);
+                        Console.WriteLine(insertRatings);
+
+                        // ************************** Inserts for trailer table **************************************
+                        if (movie.Trailer.Count == 0)
+                        {
+                            string insertTrailer = "Insert into Project.Trailer (movieID, TrailerSequence, url)" + "values ("
+                                    + "(select MovieID from Project.Movies where title ='" + movie.Title + "' and releaseDate ='" + movie.Release_Date + "'),"
+                                    + 0 + ",'" + "null" + "')";
+                            file.WriteLine(insertTrailer);
+                            Console.WriteLine(insertTrailer);
+                        }
+                        else
+                        {
+                            for (int seq = 0; seq < movie.Trailer.Count; seq++)
+                            {
+                                string insertTrailer = "Insert into Project.Trailer (movieID, traiersequence, url)" + "values ("
+                                    + "(select MovieID from Project.Movies where title ='" + movie.Title + "' and releaseDate ='" + movie.Release_Date + "'),"
+                                    + seq + ",'" + movie.Trailer[seq].VideoUrl + "')";
+                                file.WriteLine(insertTrailer);
+                                Console.WriteLine(insertTrailer);
+                            }
+                        }
+
+                        // ************************** Inserts for genre table **************************************
+                        for (int genrenum = 0; genrenum < movie.Genre.Count; genrenum++)
+                        {
+                            string insertGenre = "if not exists (select * from Project.Genres where GenreName = '" + movie.Genre[genrenum]
+                                + "') insert into project.genres (GenreName) values ('" + movie.Genre[genrenum] + "')";
+                            file.WriteLine(insertGenre);
+                            Console.WriteLine(insertGenre);
+                        }
+
+                        // ************************** Inserts for MoviGenre table **************************************
+                        for (int genrenum = 0; genrenum < movie.Genre.Count; genrenum++)
+                        {
+                            string insertmovieGenre = "insert into project.MovieGenre (GenreId, MovieId) values ("
+                            + "(select genreId from project.genres where genreName ='" + movie.Genre[genrenum] + "'), "
+                            + "(select movieId from project.movies where title ='" + movie.Title + "'))";
+                            file.WriteLine(insertmovieGenre);
+                            Console.WriteLine(insertmovieGenre);
+                        }
+
+                        // ************************** Inserts for language table **************************************
+                        //string insertLanguage;
+                        //file.WriteLine(insertLanguage);
+                        //Console.WriteLine(insertLanguage);
+
+                        file.WriteLine(); //used as new line
+                    }
+                    catch (Exception e)
+                    {
+                        MovieIdIndex++; //if fails for some reason, it will go to next movie
+                    }
                 }
-                file.Close();
             }
+            file.Close();
         }
-
-
-        
-
-        //    public static SqlConnection GetConnection()
-        //    {
-        //        SqlConnection connection = new SqlConnection();
-        //        connection.ConnectionString =
-        //            "Data Source=aura.students.cset.oit.edu" +
-        //            ";Initial Catalog=" + DB_NAME +
-        //            ";Integrated Security=False" +
-        //            ";User ID=" + DB_USER_NAME + ";Password=" + DB_USER_PWD;
-
-        //        return connection;
-        //    }
-
-        //    public static void WriteMovie(Movie obj)
-        //    {
-        //        SqlConnection connection = null;
-        //        try
-        //        {
-        //            connection = GetConnection();
-
-        //            using (SqlCommand command = new SqlCommand())
-        //            {
-        //                command.Connection = connection;
-        //                command.CommandText =
-        //                    "INSERT INTO " + "Project" + ".Movies (Title, ContentRating, ReleaseDate, Runtime) " +
-        //                    "VALUES (@Title, @ContentRating, @ReleaseDate, @Runtime)" +
-        //                    "Select Scope_Identity()";
-
-        //                command.Parameters.AddWithValue("@Title", obj.Title);
-        //                if (string.IsNullOrEmpty(obj.Content_Rating))
-        //                {
-        //                    command.Parameters.AddWithValue("@ContentRating", DBNull.Value);
-        //                }
-        //                else
-        //                {
-        //                    command.Parameters.AddWithValue("@ContentRating", obj.Content_Rating);
-        //                }
-        //                if (obj.Release_Date == default(DateTime))
-        //                {
-        //                    command.Parameters.AddWithValue("@ReleaseDate", DBNull.Value);
-        //                }
-        //                else
-        //                {
-        //                    command.Parameters.AddWithValue("@ReleaseDate", obj.Release_Date);
-        //                }
-        //                if (string.IsNullOrEmpty(obj.Length))
-        //                {
-        //                    command.Parameters.AddWithValue("@Runtime", DBNull.Value);
-        //                }
-        //                else
-        //                {
-        //                    command.Parameters.AddWithValue("@Runtime", Convert.ToInt32(obj.Length));
-        //                }
-        //                connection.Open();
-
-        //                obj.MovieID = Convert.ToInt32(command.ExecuteScalar());
-        //            }
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            throw e;
-        //        }
-        //        finally
-        //        {
-        //            if (connection != null)
-        //            {
-        //                connection.Close();
-        //            }
-        //        }
-        //    }
-
-        //    public static void WriteLanguage(Movie obj)
-        //    {
-        //        SqlConnection connection = null;
-
-        //        try
-        //        {
-        //            using (connection = GetConnection())
-        //            {
-        //                connection.Open();
-
-        //                foreach (string lang in obj.Metadata.Languages)
-        //                {
-        //                    int LanguageID = -1;
-
-        //                    using (SqlCommand command = new SqlCommand())
-        //                    {
-        //                        command.Connection = connection;
-        //                        command.CommandText =
-        //                            "Select LanguageID " +
-        //                            "From Project.Languages " +
-        //                            "Where Language = '" + lang + "'";
-
-        //                        SqlDataReader LangQueryReader = command.ExecuteReader();
-
-        //                        if (LangQueryReader.HasRows)
-        //                        {
-        //                            LangQueryReader.Read();
-        //                            LanguageID = LangQueryReader.GetInt32(0);
-        //                            LangQueryReader.Close();
-        //                        }
-        //                        else
-        //                        {
-        //                            command.CommandText =
-        //                                "Insert Project.Languages (Language) " +
-        //                                "Values ('" + lang + "')" +
-        //                                "Select Scope_Identity()";
-
-        //                            LangQueryReader.Close();
-
-        //                            LanguageID = Convert.ToInt32(command.ExecuteScalar());
-        //                        }
-        //                    }
-        //                    using (SqlCommand command = new SqlCommand())
-        //                    {
-        //                        command.Connection = connection;
-        //                        command.CommandText =
-        //                            "INSERT INTO " + "Project" + ".MovieLanguages (LanguageID, MovieID) " +
-        //                            "VALUES (@LanguageID, @MovieID)";
-
-        //                        command.Parameters.AddWithValue("@LanguageID", LanguageID);
-        //                        command.Parameters.AddWithValue("@MovieID", obj.MovieID);
-
-        //                        command.ExecuteNonQuery();
-        //                    }
-        //                }
-
-        //            }
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            throw e;
-        //        }
-        //        finally
-        //        {
-        //            if (connection != null)
-        //            {
-        //                connection.Close();
-        //            }
-        //        }
-        //    }
     }
 }
 
