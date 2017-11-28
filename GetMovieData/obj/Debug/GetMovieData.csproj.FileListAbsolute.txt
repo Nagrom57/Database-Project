@@ -1,6 +1,0 @@
-C:\Users\levip_000\Desktop\Database-Project\GetMovieData\bin\Debug\GetMovieData.exe.config
-C:\Users\levip_000\Desktop\Database-Project\GetMovieData\bin\Debug\GetMovieData.exe
-C:\Users\levip_000\Desktop\Database-Project\GetMovieData\bin\Debug\GetMovieData.pdb
-C:\Users\levip_000\Desktop\Database-Project\GetMovieData\obj\Debug\GetMovieData.csprojResolveAssemblyReference.cache
-C:\Users\levip_000\Desktop\Database-Project\GetMovieData\obj\Debug\GetMovieData.exe
-C:\Users\levip_000\Desktop\Database-Project\GetMovieData\obj\Debug\GetMovieData.pdb

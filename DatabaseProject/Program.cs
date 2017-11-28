@@ -18,11 +18,11 @@ namespace DatabaseProject
             System.IO.StreamWriter file = new System.IO.StreamWriter(
                 Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName + "\\Inserts.txt");
 
-            int MovieIdIndex = 1000;
-            while (MovieIdIndex < 1003)
+            int MovieIdIndex = 100000;
+            while (MovieIdIndex < 101000)
             {
 
-                string MovieUrl = "http://www.theimdbapi.org/api/movie?movie_id=tt000" + MovieIdIndex;
+                string MovieUrl = "http://www.theimdbapi.org/api/movie?movie_id=tt0" + MovieIdIndex;
                 MovieIdIndex++;
 
                 using (WebClient wc = new WebClient())
@@ -31,25 +31,39 @@ namespace DatabaseProject
                     {
                         string json = wc.DownloadString(MovieUrl);
                         Movie movie = JsonConvert.DeserializeObject<Movie>(json);
+                        if (movie.Title.Contains("'"))
+                        {
+                            movie.Title = movie.Title.Replace("'", "''");
+                        }
 
                         // *************************** Check nulls *************************************************
                         if (string.IsNullOrEmpty(movie.Content_Rating)) movie.Content_Rating = "null";
-                        if (string.IsNullOrEmpty(movie.Release_Date)) movie.Release_Date = "null";
+                        if (string.IsNullOrEmpty(movie.Release_Date)) throw new Exception("Next Movie");//movie.Release_Date = "null";
                         if (string.IsNullOrEmpty(movie.Length)) movie.Length = "null";
-
+                        
                         // ************************** Inserts for movies table **************************************
                         string insertMovie = "Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime) "
-                            + "values ('" + movie.Title + "'," + movie.Content_Rating + ",'" + movie.Release_Date + "'," + Convert.ToInt32(movie.Length) + ")";
+                            + "values ('" + movie.Title + "','" + movie.Content_Rating + "','" + movie.Release_Date + "'," + Convert.ToInt32(movie.Length) + ")";
                         file.WriteLine(insertMovie);
                         Console.WriteLine(insertMovie);
 
                         // ************************** Inserts for directors table *************************************
-                        //This is not quite right yet because it doesnt account for duplicates or the linking table
-                        //string insertDirectors = "Insert into Project.Directors (DirectorName) values ('" + movie.Director + "')";
-                        //file.WriteLine(insertDirectors);
-                        //Console.WriteLine(insertDirectors);
+                        string insertDirectors = "if not exists (select * from project.Directors where DirectorName='" + movie.Director + "')"
+                             + "Insert into Project.Directors (DirectorName) values ('" + movie.Director + "')";
+                        file.WriteLine(insertDirectors);
+                        Console.WriteLine(insertDirectors);
+
+                        // ************************** Inserts for Moviedirectors table *************************************
+                        string insertMovieDirectors = "insert into project.MovieDirectors (DirectorId, MovieId) values (" 
+                            +"(select directorId from project.directors where DirectorName ='" + movie.Director + "'), "
+                            + "(select movieId from project.movies where title ='" + movie.Title + "'))";
+                        file.WriteLine(insertMovieDirectors);
+                        Console.WriteLine(insertMovieDirectors);
 
                         // ************************** Inserts for ratings table **************************************
+                        if (string.IsNullOrEmpty(movie.Rating_Count)) movie.Rating_Count = "null";
+                        if (string.IsNullOrEmpty(movie.Rating)) movie.Rating = "null";
+
                         string insertRatings = "Insert into Project.Ratings (NumberOfRatings, IMDBRating, MovieID)" 
                             + "values (" + movie.Rating_Count + "," + movie.Rating + "," 
                             + "(select MovieID from Project.Movies where title ='" + movie.Title + "' and releaseDate ='" + movie.Release_Date + "'))";
@@ -96,10 +110,73 @@ namespace DatabaseProject
                             Console.WriteLine(insertmovieGenre);
                         }
 
-                        // ************************** Inserts for language table **************************************
-                        //string insertLanguage;
-                        //file.WriteLine(insertLanguage);
-                        //Console.WriteLine(insertLanguage);
+                        // ************************** Inserts for languages table **************************************
+                        for (int langnum = 0; langnum < movie.Metadata.Languages.Count; langnum++)
+                        {
+                            string insertLanguage = "if not exists (select * from project.Languages where language = '" + movie.Metadata.Languages[langnum]
+                                + "') insert into project.Languages (Language) values ('" + movie.Metadata.Languages[langnum] + "')";
+                            file.WriteLine(insertLanguage);
+                            Console.WriteLine(insertLanguage);
+                        }
+
+                        // ************************** Inserts for Movielanguages table **************************************
+                        for (int langnum = 0; langnum < movie.Metadata.Languages.Count; langnum++)
+                        {
+                            string insertMovieLanguages = "insert into project.MovieLanguages (LanguageID, MovieId) values ("
+                            + "(select LanguageId from project.languages where language ='" + movie.Metadata.Languages[langnum] + "'), "
+                            + "(select movieId from project.movies where title ='" + movie.Title + "'))";
+                            file.WriteLine(insertMovieLanguages);
+                            Console.WriteLine(insertMovieLanguages);
+                        }
+
+                        // ************************** Inserts for writers table **************************************
+                        for (int writnum = 0; writnum < movie.Writers.Count; writnum++)
+                        {
+                            string insertwriter = "if not exists (select * from project.Writers where WriterName = '" + movie.Writers[writnum]
+                                + "') insert into project.Writers (WriterName) values ('" + movie.Writers[writnum] + "')";
+                            file.WriteLine(insertwriter);
+                            Console.WriteLine(insertwriter);
+                        }
+
+                        // ************************** Inserts for MovieWriters table **************************************
+                        for (int writnum = 0; writnum < movie.Writers.Count; writnum++)
+                        {
+                            string insertMovieWriters = "insert into project.MovieWriters (WriterId, MovieId) values ("
+                            + "(select WriterId from project.Writers where WriterName ='" + movie.Writers[writnum] + "'), "
+                            + "(select movieId from project.movies where title ='" + movie.Title + "'))";
+                            file.WriteLine(insertMovieWriters);
+                            Console.WriteLine(insertMovieWriters);
+                        }
+
+                        // ************************** Inserts for Actors table **************************************
+                        for (int actnum = 0; actnum < movie.Cast.Count; actnum++)
+                        {
+                            if (movie.Cast[actnum].Name.Contains("'"))
+                            {
+                                movie.Cast[actnum].Name = movie.Cast[actnum].Name.Replace("'", "''");
+                            }
+                            string insertactor = "if not exists (select * from project.Actors where Name = '" + movie.Cast[actnum].Name
+                                + "') insert into project.Actors (Name) values ('" + movie.Cast[actnum].Name + "')";
+                            file.WriteLine(insertactor);
+                            Console.WriteLine(insertactor);
+                        }
+
+                        // ************************** Inserts for Cast table **************************************
+                        for (int actnum = 0; actnum < movie.Cast.Count; actnum++)
+                        {
+                            if (string.IsNullOrEmpty(movie.Cast[actnum].Character)) movie.Cast[actnum].Character = "null";
+                            if (movie.Cast[actnum].Character.Contains("'"))
+                            {
+                                movie.Cast[actnum].Character = movie.Cast[actnum].Character.Replace("'", "''");
+                            }
+
+                            string insertCast = "insert into project.Cast (ActorId, MovieId, CharacterName) values ("
+                            + "(select ActorId from project.Actors where Name ='" + movie.Cast[actnum].Name + "'), "
+                            + "(select movieId from project.movies where title ='" + movie.Title + "'),'"
+                            + movie.Cast[actnum].Character + "')";
+                            file.WriteLine(insertCast);
+                            Console.WriteLine(insertCast);
+                        }
 
                         file.WriteLine(); //used as new line
                     }
@@ -128,7 +205,7 @@ public class Movie
     //public string State { get; set; }
     //public string Country { get; set; }
 
-    //public List<string> Writers { get; set; }
+    public List<string> Writers { get; set; }
     public string Director { get; set; }
     public List<string> Genre { get; set; }
 
