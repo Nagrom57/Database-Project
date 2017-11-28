@@ -60,7 +60,7 @@ create table Project.Cast (
 			references Project.Actors (ActorID)
 	, MovieID			int		Foreign Key
 			references Project.Movies (MovieID)
-	, CharacterName		varchar(70)		not null
+	, CharacterName		varchar(150)		not null
 )
 
 create table Project.Writers (

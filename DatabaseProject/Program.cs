@@ -18,8 +18,8 @@ namespace DatabaseProject
             System.IO.StreamWriter file = new System.IO.StreamWriter(
                 Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName + "\\Inserts.txt");
 
-            int MovieIdIndex = 100000;
-            while (MovieIdIndex < 101000)
+            int MovieIdIndex = 102000;
+            while (MovieIdIndex < 102100)
             {
 
                 string MovieUrl = "http://www.theimdbapi.org/api/movie?movie_id=tt0" + MovieIdIndex;
@@ -42,12 +42,20 @@ namespace DatabaseProject
                         if (string.IsNullOrEmpty(movie.Length)) movie.Length = "null";
                         
                         // ************************** Inserts for movies table **************************************
+                        if(movie.Release_Date.Length == 7)
+                        {
+                            movie.Release_Date = "9999-09-09";
+                        }
                         string insertMovie = "Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime) "
                             + "values ('" + movie.Title + "','" + movie.Content_Rating + "','" + movie.Release_Date + "'," + Convert.ToInt32(movie.Length) + ")";
                         file.WriteLine(insertMovie);
                         Console.WriteLine(insertMovie);
 
                         // ************************** Inserts for directors table *************************************
+                        if (movie.Director.Contains("'"))
+                        {
+                            movie.Director = movie.Director.Replace("'", "''");
+                        }
                         string insertDirectors = "if not exists (select * from project.Directors where DirectorName='" + movie.Director + "')"
                              + "Insert into Project.Directors (DirectorName) values ('" + movie.Director + "')";
                         file.WriteLine(insertDirectors);
@@ -63,7 +71,10 @@ namespace DatabaseProject
                         // ************************** Inserts for ratings table **************************************
                         if (string.IsNullOrEmpty(movie.Rating_Count)) movie.Rating_Count = "null";
                         if (string.IsNullOrEmpty(movie.Rating)) movie.Rating = "null";
-
+                        if(movie.Rating_Count.Contains(","))
+                        {
+                            movie.Rating_Count = movie.Rating_Count.Replace(",", "");
+                        }
                         string insertRatings = "Insert into Project.Ratings (NumberOfRatings, IMDBRating, MovieID)" 
                             + "values (" + movie.Rating_Count + "," + movie.Rating + "," 
                             + "(select MovieID from Project.Movies where title ='" + movie.Title + "' and releaseDate ='" + movie.Release_Date + "'))";
@@ -83,7 +94,7 @@ namespace DatabaseProject
                         {
                             for (int seq = 0; seq < movie.Trailer.Count; seq++)
                             {
-                                string insertTrailer = "Insert into Project.Trailer (movieID, traiersequence, url)" + "values ("
+                                string insertTrailer = "Insert into Project.Trailer (movieID, TrailerSequence, url)" + "values ("
                                     + "(select MovieID from Project.Movies where title ='" + movie.Title + "' and releaseDate ='" + movie.Release_Date + "'),"
                                     + seq + ",'" + movie.Trailer[seq].VideoUrl + "')";
                                 file.WriteLine(insertTrailer);
@@ -132,6 +143,10 @@ namespace DatabaseProject
                         // ************************** Inserts for writers table **************************************
                         for (int writnum = 0; writnum < movie.Writers.Count; writnum++)
                         {
+                            if(movie.Writers[writnum].Contains("'"))
+                            {
+                                movie.Writers[writnum] = movie.Writers[writnum].Replace("'", "''");
+                            }
                             string insertwriter = "if not exists (select * from project.Writers where WriterName = '" + movie.Writers[writnum]
                                 + "') insert into project.Writers (WriterName) values ('" + movie.Writers[writnum] + "')";
                             file.WriteLine(insertwriter);
