@@ -19,7 +19,7 @@ namespace DatabaseProject
                 Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName + "\\Inserts.txt");
 
             int MovieIdIndex = 102000;
-            while (MovieIdIndex < 102100)
+            while (MovieIdIndex < 102010)
             {
 
                 string MovieUrl = "http://www.theimdbapi.org/api/movie?movie_id=tt0" + MovieIdIndex;
@@ -38,8 +38,11 @@ namespace DatabaseProject
 
                         // *************************** Check nulls *************************************************
                         if (string.IsNullOrEmpty(movie.Content_Rating)) movie.Content_Rating = "null";
-                        if (string.IsNullOrEmpty(movie.Release_Date)) throw new Exception("Next Movie");//movie.Release_Date = "null";
+                        else movie.Content_Rating = "'" + movie.Content_Rating + "'";
+                        if (string.IsNullOrEmpty(movie.Release_Date)) movie.Release_Date = "9999-09-09";
                         if (string.IsNullOrEmpty(movie.Length)) movie.Length = "null";
+                        else movie.Length = "'" + movie.Length + "'";
+                       
                         
                         // ************************** Inserts for movies table **************************************
                         if(movie.Release_Date.Length == 7)
@@ -47,7 +50,7 @@ namespace DatabaseProject
                             movie.Release_Date = "9999-09-09";
                         }
                         string insertMovie = "Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime) "
-                            + "values ('" + movie.Title + "','" + movie.Content_Rating + "','" + movie.Release_Date + "'," + Convert.ToInt32(movie.Length) + ")";
+                            + "values ('" + movie.Title + "'," + movie.Content_Rating + ",'" + movie.Release_Date + "'," + movie.Length + ")";
                         file.WriteLine(insertMovie);
                         Console.WriteLine(insertMovie);
 
@@ -86,7 +89,7 @@ namespace DatabaseProject
                         {
                             string insertTrailer = "Insert into Project.Trailer (movieID, TrailerSequence, url)" + "values ("
                                     + "(select MovieID from Project.Movies where title ='" + movie.Title + "' and releaseDate ='" + movie.Release_Date + "'),"
-                                    + 0 + ",'" + "null" + "')";
+                                    + 0 + ", null)";
                             file.WriteLine(insertTrailer);
                             Console.WriteLine(insertTrailer);
                         }
@@ -180,6 +183,8 @@ namespace DatabaseProject
                         for (int actnum = 0; actnum < movie.Cast.Count; actnum++)
                         {
                             if (string.IsNullOrEmpty(movie.Cast[actnum].Character)) movie.Cast[actnum].Character = "null";
+                            else movie.Cast[actnum].Character = "'" + movie.Cast[actnum].Character + "'";
+
                             if (movie.Cast[actnum].Character.Contains("'"))
                             {
                                 movie.Cast[actnum].Character = movie.Cast[actnum].Character.Replace("'", "''");
@@ -187,8 +192,8 @@ namespace DatabaseProject
 
                             string insertCast = "insert into project.Cast (ActorId, MovieId, CharacterName) values ("
                             + "(select ActorId from project.Actors where Name ='" + movie.Cast[actnum].Name + "'), "
-                            + "(select movieId from project.movies where title ='" + movie.Title + "'),'"
-                            + movie.Cast[actnum].Character + "')";
+                            + "(select movieId from project.movies where title ='" + movie.Title + "'),"
+                            + movie.Cast[actnum].Character + ")";
                             file.WriteLine(insertCast);
                             Console.WriteLine(insertCast);
                         }
