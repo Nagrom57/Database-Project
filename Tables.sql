@@ -25,7 +25,7 @@ create table Project.Trailer (
 	, MovieID			int			Foreign Key
 			References Project.Movies (MovieID)
 	, TrailerSequence	int	not null
-	, URL				varchar(400)
+	, URL				varchar(600)
 )
 
 create table Project.Languages (
@@ -60,7 +60,7 @@ create table Project.Cast (
 			references Project.Actors (ActorID)
 	, MovieID			int		Foreign Key
 			references Project.Movies (MovieID)
-	, CharacterName		varchar(150)		not null
+	, CharacterName		varchar(150)	
 )
 
 create table Project.Writers (

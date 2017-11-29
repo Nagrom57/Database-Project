@@ -18,8 +18,8 @@ namespace DatabaseProject
             System.IO.StreamWriter file = new System.IO.StreamWriter(
                 Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName + "\\Inserts.txt");
 
-            int MovieIdIndex = 102000;
-            while (MovieIdIndex < 103500)
+            int MovieIdIndex = 103500;
+            while (MovieIdIndex < 106000)
             {
 
                 string MovieUrl = "http://www.theimdbapi.org/api/movie?movie_id=tt0" + MovieIdIndex;
