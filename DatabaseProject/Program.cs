@@ -19,7 +19,7 @@ namespace DatabaseProject
                 Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName + "\\Inserts.txt");
 
             int MovieIdIndex = 102000;
-            while (MovieIdIndex < 102010)
+            while (MovieIdIndex < 103500)
             {
 
                 string MovieUrl = "http://www.theimdbapi.org/api/movie?movie_id=tt0" + MovieIdIndex;
@@ -182,13 +182,13 @@ namespace DatabaseProject
                         // ************************** Inserts for Cast table **************************************
                         for (int actnum = 0; actnum < movie.Cast.Count; actnum++)
                         {
-                            if (string.IsNullOrEmpty(movie.Cast[actnum].Character)) movie.Cast[actnum].Character = "null";
-                            else movie.Cast[actnum].Character = "'" + movie.Cast[actnum].Character + "'";
 
                             if (movie.Cast[actnum].Character.Contains("'"))
                             {
                                 movie.Cast[actnum].Character = movie.Cast[actnum].Character.Replace("'", "''");
                             }
+                            if (string.IsNullOrEmpty(movie.Cast[actnum].Character)) movie.Cast[actnum].Character = "null";
+                            else movie.Cast[actnum].Character = "'" + movie.Cast[actnum].Character + "'";
 
                             string insertCast = "insert into project.Cast (ActorId, MovieId, CharacterName) values ("
                             + "(select ActorId from project.Actors where Name ='" + movie.Cast[actnum].Name + "'), "
