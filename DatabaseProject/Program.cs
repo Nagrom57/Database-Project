@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.IO;
-using GetMovieData;
 
 namespace DatabaseProject
 {
@@ -15,22 +14,25 @@ namespace DatabaseProject
     {
         static void Main(string[] args)
         {
+            //File to export sql statements too
             System.IO.StreamWriter file = new System.IO.StreamWriter(
                 Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName + "\\Inserts.txt");
 
-            int MovieIdIndex = 103500;
-            while (MovieIdIndex < 106000)
+            int MovieIdIndex = 103500;  //Start index for movieIDs from IMDB
+            while (MovieIdIndex < 106000)   //Loop through the next 2500 movies
             {
-
+                //Url for IMDB API, concated with movie id 
                 string MovieUrl = "http://www.theimdbapi.org/api/movie?movie_id=tt0" + MovieIdIndex;
-                MovieIdIndex++;
+                MovieIdIndex++; //move to next movie
 
                 using (WebClient wc = new WebClient())
                 {
                     try
                     {
-                        string json = wc.DownloadString(MovieUrl);
-                        Movie movie = JsonConvert.DeserializeObject<Movie>(json);
+                        string json = wc.DownloadString(MovieUrl);  //Get movie info
+                        Movie movie = JsonConvert.DeserializeObject<Movie>(json);   //Parse movie info into class
+
+                        //Fix apostrophes in movie title to work with SQL
                         if (movie.Title.Contains("'"))
                         {
                             movie.Title = movie.Title.Replace("'", "''");
@@ -39,16 +41,20 @@ namespace DatabaseProject
                         // *************************** Check nulls *************************************************
                         if (string.IsNullOrEmpty(movie.Content_Rating)) movie.Content_Rating = "null";
                         else movie.Content_Rating = "'" + movie.Content_Rating + "'";
-                        if (string.IsNullOrEmpty(movie.Release_Date)) movie.Release_Date = "9999-09-09";
+
+                        //We set any invlaid date to 9999-09-09
+                        if (string.IsNullOrEmpty(movie.Release_Date)) movie.Release_Date = "9999-09-09"; 
                         if (string.IsNullOrEmpty(movie.Length)) movie.Length = "null";
                         else movie.Length = "'" + movie.Length + "'";
-                       
-                        
+
+
                         // ************************** Inserts for movies table **************************************
-                        if(movie.Release_Date.Length == 7)
+                        //We set any invlaid date to 9999-09-09
+                        if (movie.Release_Date.Length == 7)
                         {
                             movie.Release_Date = "9999-09-09";
                         }
+
                         string insertMovie = "Insert Into Project.Movies (Title, ContentRating, ReleaseDate, Runtime) "
                             + "values ('" + movie.Title + "'," + movie.Content_Rating + ",'" + movie.Release_Date + "'," + movie.Length + ")";
                         file.WriteLine(insertMovie);
@@ -198,11 +204,11 @@ namespace DatabaseProject
                             Console.WriteLine(insertCast);
                         }
 
-                        file.WriteLine(); //used as new line
+                        file.WriteLine(); //Used as new line to seperate movies
                     }
                     catch (Exception e)
                     {
-                        MovieIdIndex++; //if fails for some reason, it will go to next movie
+                        MovieIdIndex++; //If fails for some reason, it will go to next movie
                     }
                 }
             }
@@ -211,7 +217,10 @@ namespace DatabaseProject
     }
 }
 
-
+/***************************************
+ This class is used to parse and store 
+ individual elements of the movie info. 
+***************************************/
 public class Movie
 {
     public int MovieID { get; set; }
@@ -219,27 +228,22 @@ public class Movie
     public string Content_Rating { get; set; }
     public string Release_Date { get; set; }
     public string Length { get; set; }
-
-    //public string Address { get; set; }
-    //public string City { get; set; }
-    //public string State { get; set; }
-    //public string Country { get; set; }
-
     public List<string> Writers { get; set; }
     public string Director { get; set; }
     public List<string> Genre { get; set; }
-
     public Metadata Metadata { get; set; }
-
     public string Rating_Count { get; set; }
     public string IMDB_ID { get; set; }
     public string Rating { get; set; }
-
     public List<Actor> Cast { get; set; }
     public List<Trailer> Trailer { get; set; }
 
 }
 
+/***************************************
+ This class is used to parse and store 
+ the metadata elements of the movie info 
+***************************************/
 public class Metadata
 {
     public List<string> Languages { get; set; }
@@ -247,12 +251,20 @@ public class Metadata
     public string Gross { get; set; }
 }
 
+/***************************************
+ This class is used to parse and store 
+ the Actor elements of the movie info 
+***************************************/
 public class Actor
 {
     public string Character { get; set; }
     public string Name { get; set; }
 }
 
+/***************************************
+ This class is used to parse and store 
+ the Trailer elements of the movie info 
+***************************************/
 public class Trailer
 {
     public string Definition { get; set; }
