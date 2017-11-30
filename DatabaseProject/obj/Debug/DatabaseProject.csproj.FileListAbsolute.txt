@@ -1,8 +1,0 @@
-C:\Users\levip_000\Desktop\Database-Project\DatabaseProject\bin\Debug\DatabaseProject.exe.config
-C:\Users\levip_000\Desktop\Database-Project\DatabaseProject\bin\Debug\DatabaseProject.exe
-C:\Users\levip_000\Desktop\Database-Project\DatabaseProject\bin\Debug\DatabaseProject.pdb
-C:\Users\levip_000\Desktop\Database-Project\DatabaseProject\bin\Debug\Newtonsoft.Json.dll
-C:\Users\levip_000\Desktop\Database-Project\DatabaseProject\bin\Debug\Newtonsoft.Json.xml
-C:\Users\levip_000\Desktop\Database-Project\DatabaseProject\obj\Debug\DatabaseProject.csprojResolveAssemblyReference.cache
-C:\Users\levip_000\Desktop\Database-Project\DatabaseProject\obj\Debug\DatabaseProject.exe
-C:\Users\levip_000\Desktop\Database-Project\DatabaseProject\obj\Debug\DatabaseProject.pdb

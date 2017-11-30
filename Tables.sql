@@ -1,16 +1,16 @@
-drop table Project.Trailer
-drop table Project.Cast
-drop table Project.MovieWriters
-drop table Project.MovieLanguages
-drop table Project.MovieDirectors
-drop table Project.MovieGenre
-drop table Project.Genres
-drop table Project.Languages
-drop table Project.Ratings
-drop table Project.Directors
-drop table Project.Actors
-drop table Project.Writers
-drop table Project.Movies
+--drop table Project.Trailer
+--drop table Project.Cast
+--drop table Project.MovieWriters
+--drop table Project.MovieLanguages
+--drop table Project.MovieDirectors
+--drop table Project.MovieGenre
+--drop table Project.Genres
+--drop table Project.Languages
+--drop table Project.Ratings
+--drop table Project.Directors
+--drop table Project.Actors
+--drop table Project.Writers
+--drop table Project.Movies
 
 Create Table Project.Movies (
 	MovieID		int				Primary Key Identity

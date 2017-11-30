@@ -22,13 +22,15 @@ from project.Movies join project.Ratings
 order by project.Ratings.IMDBRating desc
 
 
--- Movies with their director is desc order
-select project.Movies.Title, project.Directors.DirectorName
-from project.Movies join project.MovieDirectors
-	on project.Movies.MovieID = project.MovieDirectors.MovieID
-join project.Directors
-	on project.MovieDirectors.DirectorID = project.Directors.DirectorID
-order by Project.Directors.DirectorName desc
+-- execute views
+select * from MovieAndDirector
+order by DirectorName desc
+
+select * from GenreContentRatingView
+
+select * from DirectorRatingView
+order by DirectorName desc
+
 
 
 --Average rating for each genre of movies, from best to worst
@@ -41,3 +43,20 @@ join project.Genres
 	on project.MovieGenre.GenreID = project.Genres.GenreID
 group by project.Genres.GenreName
 order by RatingAverage desc
+
+
+-- 7 table join
+select Title, IMDBRating, GenreName, DirectorName, url
+from project.Ratings join project.Movies
+	on project.Ratings.MovieID = Project.Movies.MovieID
+join project.MovieGenre
+	on project.Movies.MovieID = project.MovieGenre.MovieID
+join project.Genres
+	on project.MovieGenre.GenreID = project.Genres.GenreID
+join project.MovieDirectors 
+	on project.Movies.MovieID = project.MovieDirectors.MovieID
+join Project.Directors
+	on project.MovieDirectors.DirectorID = project.Directors.DirectorID
+join project.Trailer
+	on project.Movies.MovieID = project.Trailer.MovieID
+where url is not null

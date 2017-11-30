@@ -1,4 +1,25 @@
-﻿using System;
+﻿/***********************************************************
+* Author:				Levi Pomeroy & Morgan Loring
+* Date Created:			11/21/17
+* Last Mod Date:		11/30/17
+* Project:              Database Project - Movie DB
+* Filename:				Program.cs
+*
+* Overview:
+*	This program retrieves JSON objects from IMDB, serielizes it into our own class. 
+*	It also creates SQL insert statements and writes them to a file. These insert statements can 
+*	be copied into SQL Server Manager and executed. 
+*
+*
+* Input:
+*	N/A
+*
+* Output:
+*	Outputs the generated SQL inserts to the console and to a file called Inserts.sql
+*
+************************************************************/
+
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -218,8 +239,8 @@ namespace DatabaseProject
 }
 
 /***************************************
- This class is used to parse and store 
- individual elements of the movie info. 
+* This class is used to store the 
+* parsed data for each movie. 
 ***************************************/
 public class Movie
 {
@@ -241,18 +262,16 @@ public class Movie
 }
 
 /***************************************
- This class is used to parse and store 
- the metadata elements of the movie info 
+ This class is used to store 
+ the languages of the movie  
 ***************************************/
 public class Metadata
 {
     public List<string> Languages { get; set; }
-    public string Budget { get; set; }
-    public string Gross { get; set; }
 }
 
 /***************************************
- This class is used to parse and store 
+ This class is used to store 
  the Actor elements of the movie info 
 ***************************************/
 public class Actor
@@ -262,12 +281,11 @@ public class Actor
 }
 
 /***************************************
- This class is used to parse and store 
+ This class is used to store 
  the Trailer elements of the movie info 
 ***************************************/
 public class Trailer
 {
-    public string Definition { get; set; }
     public string VideoUrl { get; set; }
 }
 
